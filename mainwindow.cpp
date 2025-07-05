@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,7 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_fileButton_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::homePath());
+    QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::currentPath());
     loadReplayFile(filename);
 }
 
@@ -32,10 +33,17 @@ void MainWindow::loadReplayFile(QString fname)
 
 
     QTextStream in(&inputFile);
-    QString line = in.readAll();
+    QStringList lines;
+    QString line;
+    do {
+        line = in.readLine();
+        lines << line;
+    } while (line != QString());
+
+    //QString line = in.readAll();
     inputFile.close();
 
-    ui->textEdit->setPlainText(line);
+    ui->textEdit->setPlainText(lines[1]);
     QTextCursor cursor = ui->textEdit->textCursor();
     cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
 
