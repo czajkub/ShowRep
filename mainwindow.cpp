@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "state.h"
+
 #include <QFile>
 #include <QTextStream>
 #include <QFileDialog>
@@ -22,11 +24,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_fileButton_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::currentPath());
-    loadReplayFile(filename);
+    QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::homePath());
+    State state = loadReplayFile(filename);
+    fillTable(state);
 }
 
-void MainWindow::loadReplayFile(QString fname)
+State MainWindow::loadReplayFile(QString fname)
 {
     QFile inputFile(fname);
     inputFile.open(QIODevice::ReadOnly);
@@ -41,10 +44,29 @@ void MainWindow::loadReplayFile(QString fname)
     } while (line != QString());
 
     //QString line = in.readAll();
+
     inputFile.close();
 
-    ui->textEdit->setPlainText(lines[1]);
-    QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
+    return State(lines);
+
+    // ui->textEdit->setPlainText(lines[1]);
+    // QTextCursor cursor = ui->textEdit->textCursor();
+    // cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
+
+}
+
+void MainWindow::fillTable(const State &state)
+{
+    int count = 0;
+    for (const auto &mon : state.player1.pokes()) {
+        ui->pokemonTable->setItem(count, 0, new QTableWidgetItem(mon.printable()));
+        ++count;
+    }
+
+    count = 0;
+    for (const auto &mon : state.player2.pokes()) {
+        ui->pokemonTable->setItem(count, 1, new QTableWidgetItem(mon.printable()));
+        ++count;
+    }
 
 }

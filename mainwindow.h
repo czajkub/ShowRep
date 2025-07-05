@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <state.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,6 +23,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void loadReplayFile(QString fname);
+    State loadReplayFile(QString fname);
+    void fillTable(const State& state);
 };
 #endif // MAINWINDOW_H

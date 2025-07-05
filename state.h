@@ -16,6 +16,8 @@ public:
     {}
 
     void setNick(QString nick) { nickname = nick; }
+    QString printable() const { return (name + '(' + nickname + ')'); }
+
 private:
     QString name;
     QString nickname;
@@ -25,6 +27,7 @@ private:
 class Player
 {
 public:
+    Player() = default;
     Player(const QString &name, const QString &avatar)
         : name(name)
         , avatar(avatar)
@@ -32,6 +35,8 @@ public:
 
     void setTeamSize(size_t size) { teamsize = size; }
     void addPokemon(const QString &line);
+
+    std::vector<Pokemon> pokes() const { return mons; }
 
 private:
     QString name;
@@ -45,9 +50,6 @@ class State
 {
 public:
     State(const QStringList& lines);
-
-
-private:
 
     Player player1;
     Player player2;
