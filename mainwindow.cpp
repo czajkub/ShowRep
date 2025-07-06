@@ -29,7 +29,7 @@ void MainWindow::on_fileButton_clicked()
     fillTable(state);
 }
 
-State MainWindow::loadReplayFile(QString fname)
+QStringList MainWindow::loadReplayFile(QString fname)
 {
     QFile inputFile(fname);
     inputFile.open(QIODevice::ReadOnly);
@@ -47,7 +47,7 @@ State MainWindow::loadReplayFile(QString fname)
 
     inputFile.close();
 
-    return State(lines);
+    return lines;
 
     // ui->textEdit->setPlainText(lines[1]);
     // QTextCursor cursor = ui->textEdit->textCursor();

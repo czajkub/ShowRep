@@ -23,7 +23,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    State loadReplayFile(QString fname);
+    QStringList loadReplayFile(QString fname);
     void fillTable(const State& state);
 };
 #endif // MAINWINDOW_H
