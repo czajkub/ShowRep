@@ -7,21 +7,23 @@ class Pokemon
 {
 public:
     explicit Pokemon(QString name, QChar gender)
-        : name(name)
-        , gender(gender)
+        : name_(name)
+        , gender_(gender)
     {}
     explicit Pokemon(QString name)
-        : name(name)
-        , gender('U')
+        : name_(name)
+        , gender_('U')
     {}
 
-    void setNick(QString nick) { nickname = nick; }
-    QString printable() const { return (name + '(' + nickname + ')'); }
+    void setNick(QString nick) { nickname_ = nick; }
+    QString printable() const {
+        return (nickname_ == QString()) ? name_ : ( name_ + " (" + nickname_ + ")" );
+    }
 
 private:
-    QString name;
-    QString nickname;
-    QChar gender;
+    QString name_;
+    QString nickname_;
+    QChar gender_;
 };
 
 class Player
@@ -29,20 +31,22 @@ class Player
 public:
     Player() = default;
     Player(const QString &name, const QString &avatar)
-        : name(name)
-        , avatar(avatar)
+        : name_(name)
+        , avatar_(avatar)
     {}
 
-    void setTeamSize(size_t size) { teamsize = size; }
+    QString name() const { return name_; }
+
+    void setTeamSize(size_t size) { teamsize_ = size; }
     void addPokemon(const QString &line);
 
-    std::vector<Pokemon> pokes() const { return mons; }
+    std::vector<Pokemon> pokes() const { return mons_; }
 
 private:
-    QString name;
-    QString avatar;
-    size_t teamsize = 6;
-    std::vector<Pokemon> mons;
+    QString name_;
+    QString avatar_;
+    size_t teamsize_ = 6;
+    std::vector<Pokemon> mons_;
 };
 
 

@@ -1,5 +1,7 @@
 #include "state.h"
 
+#include <QRegularExpression>
+
 enum lineid {
 
     // first few lines of log
@@ -75,14 +77,16 @@ State::State(const QStringList &lines)
 {
     for (const auto &line : lines) {
         QStringList fields = line.split(u'|', Qt::SkipEmptyParts);
-        enum lineid linetype = lineEnum(fields[1]);
+        if (fields.size() == 0)
+            continue;
+        enum lineid linetype = lineEnum(fields[0]);
         switch (linetype) {
         case PLAYER:
-            fields[2] == "p1" ? player1 = Player(fields[3], fields[4])
-                              : player2 = Player(fields[3], fields[4]);
+            fields[1] == "p1" ? player1 = Player(fields[2], fields[3])
+                              : player2 = Player(fields[2], fields[3]);
             break;
         case POKE:
-            fields[2] == "p1" ? player1.addPokemon(fields[3]) : player2.addPokemon(fields[3]);
+            fields[1] == "p1" ? player1.addPokemon(fields[2]) : player2.addPokemon(fields[2]);
             break;
         default:
             break;
@@ -92,13 +96,13 @@ State::State(const QStringList &lines)
 
 void Player::addPokemon(const QString &line)
 {
-    QStringList fields = line.split(u',', Qt::SkipEmptyParts);
+    QStringList fields = line.split(QRegularExpression(", "), Qt::SkipEmptyParts);
     if (fields.size() == 1) {
-        mons.emplace_back(fields[0]);
+        mons_.emplace_back(fields[0]);
     } else {
-        mons.emplace_back(fields[0], fields[1][1]);
+        mons_.emplace_back(fields[0], fields[1][0]);
     }
-    if(mons.size() > 6 || mons.size() > teamsize) {
+    if(mons_.size() > 6 || mons_.size() > teamsize_) {
         // TODO: throw some sort of error message to user !
     }
 }

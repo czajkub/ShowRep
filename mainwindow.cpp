@@ -57,6 +57,10 @@ State MainWindow::loadReplayFile(QString fname)
 
 void MainWindow::fillTable(const State &state)
 {
+    QStringList labels;
+    labels << state.player1.name() << state.player2.name();
+    ui->pokemonTable->setHorizontalHeaderLabels(labels);
+
     int count = 0;
     for (const auto &mon : state.player1.pokes()) {
         ui->pokemonTable->setItem(count, 0, new QTableWidgetItem(mon.printable()));
