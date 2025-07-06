@@ -9,6 +9,8 @@ enum lineid {
     GAMETYPE,
     TEAMSIZE,
     GEN,
+    TIER,
+    START,
 
 
     SWITCH,
@@ -42,6 +44,10 @@ lineid lineEnum(const QString &field)
         return GAMETYPE;
     } else if (field == "gen") {
         return GEN;
+    } else if (field == "TIER") {
+        return TIER;
+    } else if (field == "start") {
+        return START;
     } else if (field == "switch") {
         return SWITCH;
     } else if (field == "move") {
@@ -92,7 +98,45 @@ State::State(const QStringList &lines)
     }
 }
 
-State initialState(const QStringList &lines) {
-
+InitialState initialState(const QStringList &lines)
+{
+    InitialState state;
+    for (const auto &line : lines) {
+        QStringList fields = line.split(u'|', Qt::SkipEmptyParts);
+        if (fields.size() == 0)
+            continue;
+        enum lineid linetype = lineEnum(fields[0]);
+        switch (linetype) {
+        case PLAYER:
+            fields[1] == "p1" ? state.player1 = Player(fields[2], fields[3])
+                              : state.player2 = Player(fields[2], fields[3]);
+            break;
+        case POKE:
+            fields[1] == "p1" ? state.player1.addPokemon(fields[2])
+                              : state.player2.addPokemon(fields[2]);
+            break;
+        case TEAMSIZE:
+            fields[1] == "p1" ? state.player1.setTeamSize(fields[2].toULongLong())
+                              : state.player2.setTeamSize(fields[2].toULongLong());
+        case GEN:
+            state.setGen(fields[1].toInt());
+            break;
+        case RULE:
+            state.addRule(fields[1]);
+            break;
+        case GAMETYPE:
+            state.setGametype(fields[1]);
+            break;
+        case TIER:
+            state.setTier(fields[1]);
+            break;
+        case START:
+            return state;
+        default:
+            break;
+        }
+    }
+    // this should be an error actually - no start means the replay is bad
+    return InitialState();
 }
 
