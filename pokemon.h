@@ -6,24 +6,39 @@
 class Pokemon
 {
 public:
+    Pokemon() = default;
     explicit Pokemon(QString name, QChar gender)
-        : name_(name)
-        , gender_(gender)
+        : name_(name),
+        nickname_(name),
+        gender_(gender),
+        hp_(100),
+        alive_(true)
     {}
     explicit Pokemon(QString name)
-        : name_(name)
-        , gender_('U')
+        : name_(name),
+        nickname_(name),
+        gender_('U'),
+        hp_(100),
+        alive_(true)
     {}
 
     void setNick(QString nick) { nickname_ = nick; }
     QString printable() const {
-        return (nickname_ == QString()) ? name_ : ( name_ + " (" + nickname_ + ")" );
+        return (nickname_ == name_) ? name_ : ( name_ + " (" + nickname_ + ")" );
     }
+
+    void setHp(int hp) { hp_ = hp; }
+    QString hp() const { return (QString::number(hp_) + "/100"); }
+
+    void fainted() { alive_ = false; }
+    bool isalive() const { return alive_; }
 
 private:
     QString name_;
     QString nickname_;
     QChar gender_;
+    int hp_ = 100;
+    bool alive_ = true;
 };
 
 

@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     game.cpp \
+    lineid.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     game.h \
+    lineid.h \
     mainwindow.h \
     player.h \
     pokemon.h \

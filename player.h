@@ -18,13 +18,19 @@ public:
     void setTeamSize(size_t size) { teamsize_ = size; }
     void addPokemon(const QString &line);
 
-    std::vector<Pokemon> pokes() const { return mons_; }
+    void setHp(const QString& nick, int hp);
+    void setFaint(const QString& nick);
+
+
+    //std::vector<Pokemon> pokes() const { return mons_; }
+    const std::unordered_map<QString, Pokemon>& pokes() const { return mons_; }
 
 private:
     QString name_;
     QString avatar_;
     size_t teamsize_ = 6;
-    std::vector<Pokemon> mons_;
+    //std::vector<Pokemon> mons_;
+    std::unordered_map<QString, Pokemon> mons_;
 };
 
 #endif // PLAYER_H

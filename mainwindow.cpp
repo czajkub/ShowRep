@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "state.h"
+#include "game.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -25,8 +25,14 @@ MainWindow::~MainWindow()
 void MainWindow::on_fileButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::homePath());
-    State state = loadReplayFile(filename);
-    fillTable(state);
+    QStringList list = loadReplayFile(filename);
+    //fillTable(state);
+    game.init(list);
+    ui->turnSlider->setMinimum(1);
+    ui->turnSlider->setMaximum(game.turns() - 1);
+    ui->turnSlider->setValue(1);
+
+    fillTable(game[1]);
 }
 
 QStringList MainWindow::loadReplayFile(QString fname)
@@ -57,20 +63,29 @@ QStringList MainWindow::loadReplayFile(QString fname)
 
 void MainWindow::fillTable(const State &state)
 {
-    QStringList labels;
-    labels << state.player1.name() << state.player2.name();
-    ui->pokemonTable->setHorizontalHeaderLabels(labels);
 
     int count = 0;
-    for (const auto &mon : state.player1.pokes()) {
-        ui->pokemonTable->setItem(count, 0, new QTableWidgetItem(mon.printable()));
+    for (const auto & [nick, mon] : state.mons1()) {
+        QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
+        QTableWidgetItem *hp = new QTableWidgetItem(mon.hp());
+
+        ui->player1table->setItem(count, 0, name);
+        ui->player1table->setItem(count, 1, hp);
         ++count;
     }
-
     count = 0;
-    for (const auto &mon : state.player2.pokes()) {
-        ui->pokemonTable->setItem(count, 1, new QTableWidgetItem(mon.printable()));
+    for (const auto & [nick, mon] : state.mons2()) {
+        QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
+        QTableWidgetItem *hp = new QTableWidgetItem(mon.hp());
+
+        ui->player2table->setItem(count, 0, name);
+        ui->player2table->setItem(count, 1, hp);
         ++count;
     }
 
+}
+
+void MainWindow::on_turnSlider_valueChanged(int value)
+{
+    fillTable(game[value]);
 }

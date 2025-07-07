@@ -20,36 +20,50 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>40</y>
-      <width>381</width>
-      <height>311</height>
+      <x>83</x>
+      <y>41</y>
+      <width>1011</width>
+      <height>261</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <layout class="QHBoxLayout" name="fileInput">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="fileLabel">
-         <property name="text">
-          <string>Replay:</string>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="fileLabel">
+           <property name="text">
+            <string>Replay:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="fileLineEdit"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="fileButton">
+           <property name="text">
+            <string>Find</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QSlider" name="turnSlider">
+         <property name="minimum">
+          <number>1</number>
          </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="fileLineEdit"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="fileButton">
-         <property name="text">
-          <string>Find</string>
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QTableWidget" name="pokemonTable">
+      <widget class="QTableWidget" name="player1table">
        <row>
         <property name="text">
          <string>Pokemon1</string>
@@ -82,12 +96,56 @@
        </row>
        <column>
         <property name="text">
-         <string>Player 1</string>
+         <string/>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Player 2</string>
+         <string/>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="player2table">
+       <row>
+        <property name="text">
+         <string>Pokemon1</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Pokemon 2</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Pokemon 3</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Pokemon 4</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Pokemon 5</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Pokemon 6</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string/>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string/>
         </property>
        </column>
       </widget>

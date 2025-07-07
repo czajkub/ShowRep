@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <state.h>
+#include <game.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,8 +22,11 @@ public:
 private slots:
     void on_fileButton_clicked();
 
+    void on_turnSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
+    Game game;
     QStringList loadReplayFile(QString fname);
     void fillTable(const State& state);
 };
