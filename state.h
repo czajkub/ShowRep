@@ -58,6 +58,8 @@ public:
     int gen() const { return gen_; }
     QString gametype() const { return gametype_; }
     QString tier() const { return tier_; }
+
+    void copyToState(State &state);
 };
 
 // InitialState initialState(QStringList &lines);

@@ -15,6 +15,7 @@ public:
 
     void handleDamage(State &state, const QStringList &lines);
     void handleFaint(State &state, const QStringList &lines);
+    void handleSwitch(State &state, const QStringList &lines);
 
     const State &operator[](size_t turn) const;
 };

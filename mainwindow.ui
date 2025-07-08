@@ -64,6 +64,9 @@
      </item>
      <item>
       <widget class="QTableWidget" name="player1table">
+       <property name="autoScroll">
+        <bool>true</bool>
+       </property>
        <row>
         <property name="text">
          <string>Pokemon1</string>

@@ -65,46 +65,10 @@ InitialState::InitialState(QStringList& lines) {
 
 }
 
-// InitialState initialState(QStringList &lines)
-// {
-//     InitialState state;
-//     for (const auto &line : lines) {
-//         QStringList fields = line.split(u'|', Qt::SkipEmptyParts);
-//         if (fields.size() == 0)
-//             continue;
-//         enum lineid linetype = lineEnum(fields[0]);
-//         switch (linetype) {
-//         case PLAYER:
-//             fields[1] == "p1" ? state.setPlayer(1, Player(fields[2], fields[3]))
-//                               : state.setPlayer(2, Player(fields[2], fields[3]));
-//             break;
-//         case POKE:
-//             fields[1] == "p1" ? state.player1().addPokemon(fields[2])
-//                               : state.player2().addPokemon(fields[2]);
-//             break;
-//         case TEAMSIZE:
-//             fields[1] == "p1" ? state.player1().setTeamSize(fields[2].toULongLong())
-//                               : state.player2().setTeamSize(fields[2].toULongLong());
-//             break;
-//         case GEN:
-//             state.setGen(fields[1].toInt());
-//             break;
-//         case RULE:
-//             state.addRule(fields[1]);
-//             break;
-//         case GAMETYPE:
-//             state.setGametype(fields[1]);
-//             break;
-//         case TIER:
-//             state.setTier(fields[1]);
-//             break;
-//         case START:
-//             lines.remove(0, lines.indexOf(line));
-//             return state;
-//         default:
-//             break;
-//         }
-//     }
-//     // this should be an error actually - no start means the replay is bad
-//     return InitialState();
-// }
+void InitialState::copyToState(State &state)
+{
+    state.player1() = player1();
+    state.player2() = player2();
+    state.setTurn(1);
+}
+

@@ -7,6 +7,7 @@ void Game::init(QStringList &lines)
 {
     initialState_ = InitialState(lines);
     State state;
+    initialState_.copyToState(state);
     addTurn(state); // add empty turn: we want to index turns from 1
 
     for (const auto &line : std::as_const(lines)) {
@@ -23,13 +24,9 @@ void Game::init(QStringList &lines)
             addTurn(state);
             state.setTurn(fields[1].toInt());
             break;
-        case PLAYER:
-            fields[1] == "p1" ? state.setPlayer(1, Player(fields[2], fields[3]))
-                              : state.setPlayer(2, Player(fields[2], fields[3]));
-            break;
-        case POKE:
-            fields[1] == "p1" ? state.player1().addPokemon(fields[2])
-                              : state.player2().addPokemon(fields[2]);
+        case SWITCH:
+            fields[1] == "p1" ? handleSwitch(state, fields)
+                              : handleSwitch(state, fields);
             break;
         case DAMAGE:
             handleDamage(state, fields);
@@ -81,6 +78,26 @@ void Game::handleFaint(State &state, const QStringList &lines)
         state.player2().setFaint(nick);
     }
 }
+
+void Game::handleSwitch(State &state, const QStringList &lines)
+{
+    QStringList switched = lines[1].split(QRegularExpression(": "));
+    QString player = switched[0];
+    QString nick = switched[1];
+    QStringList oldPokemon = lines[2].split(QRegularExpression(", "), Qt::SkipEmptyParts);
+    QString oldnick = oldPokemon[0];
+
+    if (player == "p1a") {
+        state.player1().setNick(oldnick, nick);
+        state.player1().setHp(nick, 0);
+        state.player1().setFaint(nick);
+    } else {
+        state.player2().setNick(oldnick, nick);
+        state.player2().setHp(nick, 0);
+        state.player2().setFaint(nick);
+    }
+}
+
 
 const State &Game::operator[](size_t turn) const
 {

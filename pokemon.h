@@ -37,7 +37,7 @@ private:
     QString name_;
     QString nickname_;
     QChar gender_;
-    int hp_ = 100;
+    int hp_;
     bool alive_ = true;
 };
 

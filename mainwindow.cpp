@@ -69,6 +69,10 @@ void MainWindow::fillTable(const State &state)
         QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
         QTableWidgetItem *hp = new QTableWidgetItem(mon.hp());
 
+        // QMessageBox msgBox;
+        // msgBox.setText(mon.printable());
+        // msgBox.exec();
+
         ui->player1table->setItem(count, 0, name);
         ui->player1table->setItem(count, 1, hp);
         ++count;

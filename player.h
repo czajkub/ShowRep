@@ -20,6 +20,7 @@ public:
 
     void setHp(const QString& nick, int hp);
     void setFaint(const QString& nick);
+    void setNick(const QString &oldname, const QString &newname);
 
 
     //std::vector<Pokemon> pokes() const { return mons_; }
