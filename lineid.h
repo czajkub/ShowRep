@@ -51,7 +51,7 @@ enum lineid {
 
 /**
  * @brief function converting QString to an enum value to handle a switch statement
- * @param first part of line in log, e.g. turn in |turn|1
+ * @param first part of line in log, e.g. "turn" in "|turn|1"
  * @return enum value of line
  */
 lineid lineEnum(const QString &line);
