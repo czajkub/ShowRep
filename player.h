@@ -8,7 +8,7 @@ class Player
 {
 public:
     Player() = default;
-    Player(const QString &name, const QString &avatar)
+    explicit Player(const QString &name, const QString &avatar)
         : name_(name)
         , avatar_(avatar)
     {}

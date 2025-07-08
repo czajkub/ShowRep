@@ -13,7 +13,7 @@ protected:
     int currTurn_ = 1;
 public:
     State() = default;
-    State(QStringList &lines);
+    explicit State(QStringList &lines);
 
     Player& player1() { return player1_; }
     Player& player2() { return player2_; }
@@ -47,7 +47,7 @@ class InitialState : public State
 
 public:
     InitialState() = default;
-    InitialState(QStringList &lines);
+    explicit InitialState(QStringList &lines);
 
     void addRule(const QString &rule) { rules_.push_back(rule); }
     void setGen(int gen) { gen_ = gen; }
