@@ -23,6 +23,9 @@ public:
     {}
 
     void setNick(QString nick) { nickname_ = nick; }
+    /**
+     * @brief returns a QString in the following format: name (nickname)
+     */
     QString printable() const {
         return (nickname_ == name_) ? name_ : ( name_ + " (" + nickname_ + ")" );
     }
