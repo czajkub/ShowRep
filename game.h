@@ -17,6 +17,8 @@ public:
     void handleFaint(State &state, const QStringList &lines);
     void handleSwitch(State &state, const QStringList &lines);
 
+    void updateNicks();
+
     const State &operator[](size_t turn) const;
 };
 

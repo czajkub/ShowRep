@@ -35,6 +35,7 @@ void Game::init(QStringList &lines)
             break;
         case WIN:
             addTurn(state);
+            updateNicks();
             return;
         default:
             break;
@@ -95,6 +96,17 @@ void Game::handleSwitch(State &state, const QStringList &lines)
         state.player2().setNick(oldnick, nick);
     }
 }
+
+
+
+
+void Game::updateNicks()
+{
+    return;
+}
+
+
+
 
 
 const State &Game::operator[](size_t turn) const
