@@ -17,29 +17,26 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>83</x>
-      <y>41</y>
-      <width>1011</width>
-      <height>261</height>
+      <x>80</x>
+      <y>61</y>
+      <width>1031</width>
+      <height>281</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item alignment="Qt::AlignmentFlag::AlignHCenter">
           <widget class="QLabel" name="fileLabel">
            <property name="text">
             <string>Replay:</string>
            </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="fileLineEdit"/>
          </item>
          <item>
           <widget class="QPushButton" name="fileButton">
@@ -51,107 +48,150 @@
         </layout>
        </item>
        <item>
-        <widget class="QSlider" name="turnSlider">
-         <property name="minimum">
-          <number>1</number>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item alignment="Qt::AlignmentFlag::AlignHCenter">
+          <widget class="QLabel" name="turnSliderLabel">
+           <property name="text">
+            <string>Turn</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignVCenter">
+          <widget class="QTextEdit" name="textEdit">
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>48</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="turnSlider">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="player1tableLayout">
+       <item alignment="Qt::AlignmentFlag::AlignHCenter">
+        <widget class="QLabel" name="player1tableLabel">
+         <property name="text">
+          <string>Player 1</string>
          </property>
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="player1table">
+         <property name="autoScroll">
+          <bool>true</bool>
          </property>
+         <row>
+          <property name="text">
+           <string>Pokemon1</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 2</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 3</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 4</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 5</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 6</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QTableWidget" name="player1table">
-       <property name="autoScroll">
-        <bool>true</bool>
-       </property>
-       <row>
-        <property name="text">
-         <string>Pokemon1</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 2</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 3</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 4</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 5</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 6</string>
-        </property>
-       </row>
-       <column>
-        <property name="text">
-         <string/>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string/>
-        </property>
-       </column>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTableWidget" name="player2table">
-       <row>
-        <property name="text">
-         <string>Pokemon1</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 2</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 3</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 4</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 5</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Pokemon 6</string>
-        </property>
-       </row>
-       <column>
-        <property name="text">
-         <string/>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string/>
-        </property>
-       </column>
-      </widget>
+      <layout class="QVBoxLayout" name="player2tableLayout">
+       <item alignment="Qt::AlignmentFlag::AlignHCenter">
+        <widget class="QLabel" name="player2tableLabel">
+         <property name="text">
+          <string>Player 2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="player2table">
+         <row>
+          <property name="text">
+           <string>Pokemon1</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 2</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 3</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 4</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 5</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Pokemon 6</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string/>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>

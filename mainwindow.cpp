@@ -87,6 +87,10 @@ void MainWindow::fillTable(const State &state)
         ++count;
     }
 
+    ui->player1tableLabel->setText(state.p1name());
+    ui->player2tableLabel->setText(state.p2name());
+
+
 }
 
 void MainWindow::on_turnSlider_valueChanged(int value)

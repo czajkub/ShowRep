@@ -18,6 +18,11 @@ public:
     Player& player1() { return player1_; }
     Player& player2() { return player2_; }
 
+    QString p1name() const { return player1_.name(); }
+    QString p2name() const { return player2_.name(); }
+
+
+
     const std::unordered_map<QString, Pokemon>& mons1() const { return player1_.pokes();
     }
     const std::unordered_map<QString, Pokemon>& mons2() const { return player2_.pokes();
