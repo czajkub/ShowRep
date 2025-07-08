@@ -9,6 +9,10 @@ class Game
     InitialState initialState_;
 
 public:
+    /**
+     * @brief Load game state from lines of log
+     * @param QStringList consisting of separate lines of the log
+     */
     void init(QStringList &lines);
     void addTurn(const State &turn) { turn_.push_back(turn); }
     int turns() { return turn_.size(); }

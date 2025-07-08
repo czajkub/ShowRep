@@ -102,7 +102,8 @@ void Game::handleSwitch(State &state, const QStringList &lines)
 
 void Game::updateNicks()
 {
-    return;
+    State lastState = turn_[turns() - 1];
+
 }
 
 
