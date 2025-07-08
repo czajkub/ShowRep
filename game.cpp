@@ -103,6 +103,33 @@ void Game::handleSwitch(State &state, const QStringList &lines)
 void Game::updateNicks()
 {
     State lastState = turn_[turns() - 1];
+    QStringList nicknames1;
+    QStringList nicknames2;
+    std::unordered_map<QString, QString> nicks1;
+    std::unordered_map<QString, QString> nicks2;
+
+    for (const auto &[nick, mon] : lastState.mons1()) {
+        nicknames1 << nick;
+        nicks1[nick] = mon.name();
+    }
+    for (const auto &[nick, mon] : lastState.mons2()) {
+        nicknames2 << nick;
+        nicks2[nick] = mon.name();
+    }
+
+    for (auto &state : turn_) {
+        for (auto &[nick, mon] : nicks1) {
+            if (state.mons1().count(nick) == 0) {
+                state.player1().setNick(nicks1[nick], nick);
+            }
+        }
+        for (auto &[nick, mon] : nicks2) {
+            if (state.mons2().count(nick) == 0) {
+                state.player2().setNick(nicks2[nick], nick);
+            }
+        }
+    }
+
 
 }
 

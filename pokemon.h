@@ -30,6 +30,9 @@ public:
         return (nickname_ == name_) ? name_ : ( name_ + " (" + nickname_ + ")" );
     }
 
+    QString name() const { return name_; }
+    QString nickname() const { return nickname_; }
+
     void setHp(int hp) { hp_ = hp; }
     QString hp() const { return (QString::number(hp_) + "/100"); }
 
