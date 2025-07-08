@@ -59,9 +59,16 @@ public:
     QString gametype() const { return gametype_; }
     QString tier() const { return tier_; }
 
+    /**
+     * This needs to happen this way since the corresponding
+     * lines of log are deleted from the QStringList during
+     * the constrion of this class
+     *
+     * @brief set the Player objects of passed State
+     * @param state which the data is copied to
+     */
     void copyToState(State &state);
 };
 
-// InitialState initialState(QStringList &lines);
 
 #endif // STATE_H
