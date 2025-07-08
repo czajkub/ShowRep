@@ -21,7 +21,7 @@ lineid lineEnum(const QString &line)
     } else if (line == "switch") {
         return SWITCH;
     } else if (line == "move") {
-        return SWITCH;
+        return MOVE;
     } else if (line == "c") {
         return CHAT;
     } else if (line == "j") {
@@ -44,6 +44,8 @@ lineid lineEnum(const QString &line)
         return IMMUNE;
     } else if (line == "faint") {
         return FAINT;
+    } else if (line == "win") {
+        return WIN;
     } else {
         return UNKNOWN;
     }

@@ -32,6 +32,9 @@ enum lineid {
     IMMUNE,
     FAINT,
 
+
+    WIN,
+
     UNKNOWN,
 
 };

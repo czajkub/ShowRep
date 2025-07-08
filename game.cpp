@@ -25,8 +25,7 @@ void Game::init(QStringList &lines)
             state.setTurn(fields[1].toInt());
             break;
         case SWITCH:
-            fields[1] == "p1" ? handleSwitch(state, fields)
-                              : handleSwitch(state, fields);
+            handleSwitch(state, fields);
             break;
         case DAMAGE:
             handleDamage(state, fields);
@@ -34,6 +33,9 @@ void Game::init(QStringList &lines)
         case FAINT:
             handleFaint(state, fields);
             break;
+        case WIN:
+            addTurn(state);
+            return;
         default:
             break;
         }
@@ -89,12 +91,8 @@ void Game::handleSwitch(State &state, const QStringList &lines)
 
     if (player == "p1a") {
         state.player1().setNick(oldnick, nick);
-        state.player1().setHp(nick, 0);
-        state.player1().setFaint(nick);
     } else {
         state.player2().setNick(oldnick, nick);
-        state.player2().setHp(nick, 0);
-        state.player2().setFaint(nick);
     }
 }
 
