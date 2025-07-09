@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <state.h>
-#include <game.h>
+#include <headers/state.h>
+#include <headers/game.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

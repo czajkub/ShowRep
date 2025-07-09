@@ -1,5 +1,5 @@
-#include "state.h"
-#include "lineid.h"
+#include "headers/state.h"
+#include "util/lineid.h"
 
 
 State::State(QStringList &lines)

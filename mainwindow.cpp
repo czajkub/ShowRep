@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "game.h"
+#include "headers/game.h"
 
 #include <QFile>
 #include <QTextStream>
