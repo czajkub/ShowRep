@@ -12,6 +12,7 @@ public:
         nickname_(name),
         gender_(gender),
         hp_(100),
+        maxhp_(100),
         alive_(true)
     {}
     explicit Pokemon(QString name)
@@ -19,10 +20,13 @@ public:
         nickname_(name),
         gender_('U'),
         hp_(100),
+        maxhp_(100),
         alive_(true)
     {}
 
     void setNick(QString nick) { nickname_ = nick; }
+
+
     /**
      * @brief returns a QString in the following format: name (nickname)
      */
@@ -33,8 +37,21 @@ public:
     QString name() const { return name_; }
     QString nickname() const { return nickname_; }
 
-    void setHp(int hp) { hp_ = hp; }
-    QString hp() const { return (QString::number(hp_) + "/100"); }
+
+    void setHp(int newhp, int maxhp)
+    {
+        hp_ = newhp;
+        maxhp_ = maxhp;
+    }
+    void setHp(int newhp) { hp_ = newhp; }
+
+
+    QString hp() const { return QString::number(hp_); }
+    QString maxhp() const { return QString::number(maxhp_); }
+
+
+    double healthPercent() const { return static_cast<double>(hp_) / static_cast<double>(maxhp_) * 100;}
+
 
     void fainted() { alive_ = false; }
     bool isalive() const { return alive_; }
@@ -44,6 +61,7 @@ private:
     QString nickname_;
     QChar gender_;
     int hp_;
+    int maxhp_;
     bool alive_ = true;
 };
 

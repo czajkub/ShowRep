@@ -14,12 +14,16 @@
      * @param lines - current line of the log
      */
 void handleDamage(State &state, const QStringList &lines);
+
+
 /**
      * @brief set the alive_ boolean of correct Pokemon to false
      * @param state - current state
      * @param lines - current line of the log
      */
 void handleFaint(State &state, const QStringList &lines);
+
+
 /**
      * If the nickname (set to the pokemon name by default) is different
      * from the nickname by which it is referred to in the log, the name
@@ -30,5 +34,7 @@ void handleFaint(State &state, const QStringList &lines);
      * @param lines - current line of the log
      */
 void handleSwitch(State &state, const QStringList &lines);
+
+
 
 #endif // STATEHANDLERS_H

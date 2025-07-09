@@ -26,6 +26,7 @@ enum lineid {
 
     // switches can change nicknames
     // damage changes a mon's hp stat
+    // dragging (e.g. via red card) also count as a switch
     SWITCH,
     DAMAGE,
 

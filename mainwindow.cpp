@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QString>
+#include <cmath>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,11 +29,11 @@ void MainWindow::on_fileButton_clicked()
     QStringList list = loadReplayFile(filename);
     //fillTable(state);
     game.init(list);
-    ui->turnSlider->setMinimum(1);
+    ui->turnSlider->setMinimum(0);
     ui->turnSlider->setMaximum(game.turns() - 1);
-    ui->turnSlider->setValue(1);
+    ui->turnSlider->setValue(0);
 
-    fillTable(game[1]);
+    fillTable(game[0]);
 }
 
 QStringList MainWindow::loadReplayFile(QString fname)
@@ -67,7 +68,9 @@ void MainWindow::fillTable(const State &state)
     int count = 0;
     for (const auto & [nick, mon] : state.mons1()) {
         QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
-        QTableWidgetItem *hp = new QTableWidgetItem(mon.hp());
+        double health = std::floor(mon.healthPercent() * 10) / 10;
+        QString hpstr = QString::number(health) + "%";
+        QTableWidgetItem *hp = new QTableWidgetItem(hpstr);
 
         // QMessageBox msgBox;
         // msgBox.setText(mon.printable());
@@ -80,7 +83,9 @@ void MainWindow::fillTable(const State &state)
     count = 0;
     for (const auto & [nick, mon] : state.mons2()) {
         QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
-        QTableWidgetItem *hp = new QTableWidgetItem(mon.hp());
+        double health = std::floor(mon.healthPercent() * 10) / 10;
+        QString hpstr = QString::number(health) + "%";
+        QTableWidgetItem *hp = new QTableWidgetItem(hpstr);
 
         ui->player2table->setItem(count, 0, name);
         ui->player2table->setItem(count, 1, hp);

@@ -20,10 +20,11 @@ void handleDamage(State &state, const QStringList &lines)
     }
 
     int newhp = lines[2].split(u'/')[0].toInt(); // eg. 18/100
+    int maxhp = lines[2].split(u'/')[1].toInt();
     if (player == "p1a") {
-        state.player1().setHp(nick, newhp);
+        state.player1().setHp(nick, newhp, maxhp);
     } else {
-        state.player2().setHp(nick, newhp);
+        state.player2().setHp(nick, newhp, maxhp);
     }
 }
 

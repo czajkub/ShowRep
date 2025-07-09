@@ -25,12 +25,20 @@ void Player::addPokemon(const QString &line)
     }
 }
 
-void Player::setHp(const QString& nick, int hp)
+void Player::setHp(const QString& nick, int newhp, int maxhp)
 {
     if (mons_.count(nick) == 0)
         return;
-    mons_[nick].setHp(hp);
+    mons_[nick].setHp(newhp, maxhp);
 }
+
+void Player::setHp(const QString& nick, int newhp)
+{
+    if (mons_.count(nick) == 0)
+        return;
+    mons_[nick].setHp(newhp);
+}
+
 
 void Player::setFaint(const QString &nick)
 {

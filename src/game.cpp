@@ -32,6 +32,9 @@ void Game::init(QStringList &lines)
         case DAMAGE:
             handleDamage(state, fields);
             break;
+        case HEAL:
+            handleDamage(state, fields);
+            break;
         case FAINT:
             handleFaint(state, fields);
             break;

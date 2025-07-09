@@ -18,7 +18,7 @@ lineid lineEnum(const QString &line)
         return START;
     } else if (line == "turn") {
         return TURN;
-    } else if (line == "switch") {
+    } else if (line == "switch" || line == "drag") {
         return SWITCH;
     } else if (line == "move") {
         return MOVE;

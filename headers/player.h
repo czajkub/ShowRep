@@ -20,6 +20,7 @@ public:
      * @param size - new size
      */
     void setTeamSize(size_t size) { teamsize_ = size; }
+
     /**
      * happens only during constructing the initial state
      *
@@ -31,14 +32,19 @@ public:
     /**
      * @brief change a pokemon's HP
      * @param nick of pokemon
-     * @param new hp stat
+     * @param newhp
+     * @param maxhp
      */
-    void setHp(const QString& nick, int hp);
+    void setHp(const QString &nick, int newhp, int maxhp);
+
+    void setHp(const QString &nick, int newhp);
+
     /**
      * @brief set pokemon's status to fainted
      * @param nick - nickname of pokemon
      */
     void setFaint(const QString& nick);
+
     /**
      * happens only if they differ
      *
