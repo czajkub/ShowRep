@@ -95,6 +95,8 @@ void MainWindow::fillTable(const State &state)
     ui->player1tableLabel->setText(state.p1name());
     ui->player2tableLabel->setText(state.p2name());
 
+    ui->luckScoreText->setText(QString::number(state.luckscore()));
+
 
 }
 

@@ -29,11 +29,23 @@ void Game::init(QStringList &lines)
         case SWITCH:
             handleSwitch(state, fields);
             break;
+        case MOVE:
+            handleMove(state, fields);
+            break;
         case DAMAGE:
             handleDamage(state, fields);
             break;
         case HEAL:
             handleDamage(state, fields);
+            break;
+        case MISS:
+            handleMiss(state, fields);
+            break;
+        case SUPEREFF: case RESISTED: case IMMUNE:
+            resolveMove(state, lines);
+            break;
+        case CRIT:
+            handleCrit(state, fields);
             break;
         case FAINT:
             handleFaint(state, fields);

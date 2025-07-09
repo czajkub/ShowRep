@@ -72,3 +72,10 @@ void InitialState::copyToState(State &state)
     state.setTurn(1);
 }
 
+QString State::dequeueMove()
+{
+    pending_ = false;
+    QString move = pendingMove_;
+    pendingMove_ = QString();
+    return move;
+}

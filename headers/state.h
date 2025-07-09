@@ -10,7 +10,14 @@ protected:
     Player player1_;
     Player player2_;
 
+    // positive luck - in favour of player1,
+    // negative - in favour of player2
+    double luckscore_ = 0;
+
     int currTurn_ = 1;
+
+    bool pending_ = false;
+    QString pendingMove_;
 public:
     State() = default;
     explicit State(QStringList &lines);
@@ -20,6 +27,14 @@ public:
 
     QString p1name() const { return player1_.name(); }
     QString p2name() const { return player2_.name(); }
+
+
+    void updateLuck(double value) { luckscore_ += value; }
+    double luckscore() const { return luckscore_; }
+
+    void enqueueMove(const QString &move) { pending_ = true; pendingMove_ = move; }
+    bool moveIsPending() const { return pending_; }
+    QString dequeueMove();
 
 
 
