@@ -19,6 +19,7 @@ void Game::init(QStringList &lines)
         enum lineid linetype = lineEnum(fields[0]);
 
         switch (linetype) {
+
         case TURN:
             if (line == "|turn|1") {
                 break;
@@ -26,34 +27,42 @@ void Game::init(QStringList &lines)
             addTurn(state);
             state.setTurn(fields[1].toInt());
             break;
+
+        case UPKEEP:
+            upkeep(state);
+            break;
+
         case SWITCH:
             handleSwitch(state, fields);
             break;
+
         case MOVE:
             handleMove(state, fields);
             break;
+
         case DAMAGE:
             handleDamage(state, fields);
             break;
+
         case HEAL:
             handleDamage(state, fields);
             break;
-        case MISS:
-            handleMiss(state, fields);
-            break;
-        case SUPEREFF: case RESISTED: case IMMUNE:
-            resolveMove(state, lines);
-            break;
+
         case CRIT:
             handleCrit(state, fields);
             break;
-        case FAINT:
-            handleFaint(state, fields);
+
+
+        case STATUS: case CANT:
+            handleStatus(state, fields);
             break;
+
+
         case WIN:
             addTurn(state);
             updateNicks();
             return;
+
         default:
             break;
         }

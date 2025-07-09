@@ -7,14 +7,18 @@
 
 
 #define MOVE_WEIGHT 1
-#define CRIT_WEIGHT 2
+#define CRIT_WEIGHT 1.3
+#define SECONDARY_WEIGHT 0.5
+
+void upkeep(State &state)
+{
+    state.resetPendingSecondary();
+    state.setMove(QString());
+}
 
 
 void handleDamage(State &state, const QStringList &lines)
 {
-    double luckchange = resolveMove(state, lines);
-    state.updateLuck(luckchange);
-
     QStringList pokemon = SPLITNICK;
     QString player = pokemon[0];
     QString nick = pokemon[1];
@@ -39,19 +43,6 @@ void handleDamage(State &state, const QStringList &lines)
     }
 }
 
-void handleFaint(State &state, const QStringList &lines)
-{
-    QStringList pokemon = SPLITNICK;
-    QString player = pokemon[0];
-    QString nick = pokemon[1];
-    if (player == "p1a") {
-        state.player1().setHp(nick, 0);
-        state.player1().setFaint(nick);
-    } else {
-        state.player2().setHp(nick, 0);
-        state.player2().setFaint(nick);
-    }
-}
 
 void handleSwitch(State &state, const QStringList &lines)
 {
@@ -70,48 +61,69 @@ void handleSwitch(State &state, const QStringList &lines)
 
 void handleMove(State &state, const QStringList &lines)
 {
-    QString move = lines[2];
+    std::string move = lines[2].toStdString();
 
-    state.enqueueMove(move);
+    state.setMove(move);
+
+    // 4 - no miss, 5 - miss
+    if (lines.size() == 4) {
+        state.updateLuck(moveLuck(move, lines, true));
+    } else {
+        state.updateLuck(moveLuck(move, lines, false));
+    }
 }
 
 
 
 void handleCrit(State &state, const QStringList &lines)
 {
-    double luckchange = resolveMove(state, lines);
-
     QString player = SPLITNICK[0];
 
+    // check whether move always crits
+    if (state.pendingSecondary() && state.secondaryType() == 'a') {
+        state.resetPendingSecondary();
+        return;
+    }
+
+    // this needs to check for crit chance raises
     double critchance = 1 / 24;
-    double critluck = (1 - critchance) * CRIT_WEIGHT;
+    double critluck = (1 - critchance) * CRIT_WEIGHT; // 2
     // player2 got a crit on the move
     if (player == "p1a")
         critluck *= -1;
 
-    luckchange += critluck;
-    state.updateLuck(luckchange);
+    state.updateLuck(critluck);
 }
 
 
-void handleMiss(State &state, const QStringList &lines)
+void handleStatus(State &state, const QStringList &lines)
 {
-    // we multiply by -1 since the miss applies to the other player
-    double luckchange = resolveMove(state, lines) * -1;
+    std::string lastmove = state.lastMove();
 
-    state.updateLuck(luckchange);
+    if (state.pendingSecondary() && state.secondaryType() == 's') {
+        state.updateLuck(secondaryLuck(lastmove, lines, true));
+    }
 }
 
 
-double resolveMove(State &state, const QStringList &lines)
-{
-    if (!state.moveIsPending())
-        return 0;
 
+double secondaryLuck(const std::string &move, const QStringList &lines, bool hit)
+{
     QString player = SPLITNICK[0];
 
-    std::string move = state.dequeueMove().toStdString();
+    double acc = secondary.at(move);
 
+    double luckchange = acc * SECONDARY_WEIGHT;
+
+    if (player == "p1a") {
+        return luckchange;
+    }
+    return -1 * luckchange;
+}
+
+double moveLuck(const std::string& move, const QStringList &lines, bool hit)
+{
+    QString player = SPLITNICK[0];
 
     double acc = moves.at(move);
 
@@ -119,17 +131,20 @@ double resolveMove(State &state, const QStringList &lines)
     if (acc == 2)
         return 0;
 
-    // add some handling of evasion and accuracy stats at this stage !!!
+    // check evasion/acc changes
+    double actualacc = acc;
+    double luckchange;
 
-    double complement = 1 - acc;
+    if (hit) {
+        double complement = 1 - actualacc;
+        luckchange = complement * MOVE_WEIGHT;
+    }
+    else {
+        luckchange = actualacc * MOVE_WEIGHT;
+    }
 
-    if (complement == 0)
-        return 0;
-
-    if (player == "p2a")
-        complement *= -1;
-
-    double luckchange = complement * MOVE_WEIGHT; // 1
-
-    return luckchange;
+    if (player == "p1a") {
+        return luckchange;
+    }
+    return -1 * luckchange;
 }

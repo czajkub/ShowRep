@@ -16,8 +16,12 @@ protected:
 
     int currTurn_ = 1;
 
-    bool pending_ = false;
-    QString pendingMove_;
+    // used to determine whether move missed or not
+    std::string lastMove_;
+
+    // used to determine whether secondary effect of a move triggered
+    bool pendingsecondary_ = false;
+    char secondarytype_ = '0';
 public:
     State() = default;
     explicit State(QStringList &lines);
@@ -32,10 +36,24 @@ public:
     void updateLuck(double value) { luckscore_ += value; }
     double luckscore() const { return luckscore_; }
 
-    void enqueueMove(const QString &move) { pending_ = true; pendingMove_ = move; }
-    bool moveIsPending() const { return pending_; }
-    QString dequeueMove();
 
+    void setMove(const std::string &move) { lastMove_ = move; }
+    void setMove(const QString &move) { lastMove_ = move.toStdString(); }
+    const std::string &lastMove() const { return lastMove_; }
+
+
+    void resetPendingSecondary()
+    {
+        pendingsecondary_ = false;
+        secondarytype_ = '0';
+    }
+    void setSecondary(const char &type) {
+        pendingsecondary_ = true;
+        secondarytype_ = type;
+    }
+
+    bool pendingSecondary() const { return pendingsecondary_; }
+    char secondaryType() const { return secondarytype_; }
 
 
     const std::unordered_map<QString, Pokemon>& mons1() const { return player1_.pokes();
@@ -57,6 +75,9 @@ public:
     //double luckscore;
 
 };
+
+
+
 
 class InitialState : public State
 {

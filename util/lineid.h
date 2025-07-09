@@ -16,34 +16,50 @@ enum lineid {
     TIER,
     START,
 
-    // chat messages: not handled ATP
-    CHAT,
-    JOIN,
-    LEAVE,
-
-    // adds turn to game, moves turn number
+    // upkeep updates some state values, like pending secondary effects
+    // turn adds turn to game, moves turn number
+    UPKEEP,
     TURN,
+
 
     // switches can change nicknames
     // damage changes a mon's hp stat
     // dragging (e.g. via red card) also count as a switch
     SWITCH,
+
+
+    // damage handling
     DAMAGE,
+    HEAL,
+
 
     // this is gonna impact the luck score
     MOVE,
-    HEAL,
     CRIT,
-    MISS,
-    FAINT,
+
+
+    // associated with secondary effects of moves
+    CANT,
+    STATUS,
+
 
     // not handled
     SUPEREFF,
     RESISTED,
     IMMUNE,
+    FAINT,
+    MISS,
+
+
+    // chat messages: not handled ATP
+    CHAT,
+    JOIN,
+    LEAVE,
+
 
     // adds last turn, updates nicks, finishes parsing
     WIN,
+
 
     // some lines arent handled yet
     UNKNOWN,

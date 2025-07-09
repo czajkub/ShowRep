@@ -6,6 +6,8 @@
 #include <QStringList>
 
 
+void upkeep(State &state);
+
 /**
      * change the HP stat in the correct Player object
      * of the pokemon whose HP was changed
@@ -14,14 +16,6 @@
      * @param lines - current line of the log
      */
 void handleDamage(State &state, const QStringList &lines);
-
-
-/**
-     * @brief set the alive_ boolean of correct Pokemon to false
-     * @param state - current state
-     * @param lines - current line of the log
-     */
-void handleFaint(State &state, const QStringList &lines);
 
 
 /**
@@ -47,12 +41,37 @@ void handleSwitch(State &state, const QStringList &lines);
 void handleMove(State &state, const QStringList &lines);
 
 
+/**
+ * checks whether the move always crits and should sometime
+ * check whether crit chance is raised or smth
+ * for example special moves with raised crit chance?
+ *
+ * @brief update luckscore
+ * @param state
+ * @param lines
+ */
 void handleCrit(State &state, const QStringList &lines);
 
 
-void handleMiss(State &state, const QStringList &lines);
 
 
-double resolveMove(State &state, const QStringList &lines);
+
+void handleStatus(State &state, const QStringList &lines);
+
+
+
+
+
+double secondaryLuck(const std::string &move, const QStringList &lines, bool hit);
+
+
+/**
+ * @brief calculate luck score based on move and whether it hit
+ * @param state
+ * @param lines
+ * @param hit - whether the move hit or not
+ * @return
+ */
+double moveLuck(const std::string &move, const QStringList &lines, bool hit);
 
 #endif // STATEHANDLERS_H
