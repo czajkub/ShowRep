@@ -22,6 +22,9 @@ protected:
     // used to determine whether secondary effect of a move triggered
     bool pendingsecondary_ = false;
     char secondarytype_ = '0';
+
+    std::vector<QString> luckLog_;
+
 public:
     State() = default;
     explicit State(QStringList &lines);
@@ -56,10 +59,13 @@ public:
     char secondaryType() const { return secondarytype_; }
 
 
-    const std::unordered_map<QString, Pokemon>& mons1() const { return player1_.pokes();
-    }
-    const std::unordered_map<QString, Pokemon>& mons2() const { return player2_.pokes();
-    }
+    void addLog(const QString &log) { luckLog_.push_back(log); }
+    const std::vector<QString> log() const { return luckLog_; }
+
+
+
+    const std::unordered_map<QString, Pokemon>& mons1() const { return player1_.pokes(); }
+    const std::unordered_map<QString, Pokemon>& mons2() const { return player2_.pokes(); }
 
 
 
@@ -72,7 +78,6 @@ public:
 
     void setTurn(int turn) { currTurn_ = turn; }
     int turn() { return currTurn_; }
-    //double luckscore;
 
 };
 

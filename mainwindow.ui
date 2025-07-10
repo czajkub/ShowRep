@@ -195,27 +195,25 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="luckGraph" native="true">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>360</y>
-      <width>71</width>
-      <height>61</height>
+      <x>80</x>
+      <y>340</y>
+      <width>691</width>
+      <height>261</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <item alignment="Qt::AlignmentFlag::AlignHCenter">
-      <widget class="QLabel" name="luckScoreLabel">
-       <property name="text">
-        <string>LuckScore</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="luckScoreText"/>
-     </item>
-    </layout>
+   </widget>
+   <widget class="QWidget" name="luckLog" native="true">
+    <property name="geometry">
+     <rect>
+      <x>769</x>
+      <y>339</y>
+      <width>341</width>
+      <height>261</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

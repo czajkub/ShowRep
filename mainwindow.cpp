@@ -10,6 +10,12 @@
 #include <QString>
 #include <cmath>
 
+
+#include <QtCharts/QChart>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCore/QPointF>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -32,6 +38,8 @@ void MainWindow::on_fileButton_clicked()
     ui->turnSlider->setMinimum(0);
     ui->turnSlider->setMaximum(game.turns() - 1);
     ui->turnSlider->setValue(0);
+
+    plotGraph(game);
 
     fillTable(game[0]);
 }
@@ -95,12 +103,53 @@ void MainWindow::fillTable(const State &state)
     ui->player1tableLabel->setText(state.p1name());
     ui->player2tableLabel->setText(state.p2name());
 
-    ui->luckScoreText->setText(QString::number(state.luckscore()));
-
-
 }
 
 void MainWindow::on_turnSlider_valueChanged(int value)
 {
     fillTable(game[value]);
+}
+
+
+void MainWindow::plotGraph(const Game &game)
+{
+    QLineSeries *series = new QLineSeries();
+    for (int i = 0; i < game.turns(); i++) {
+        series->append(i, game[i].luckscore());
+    }
+
+    series->setColor(Qt::blue);
+    series->setPen(QPen(Qt::green, 2));
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+
+    chart->setTitle("Luck score");
+
+    QChartView *chartview = new QChartView(chart);
+    chartview->setRenderHint(QPainter::Antialiasing);
+
+    QWidget *luckGraph = ui->luckGraph;
+
+    QVBoxLayout *layout = new QVBoxLayout(luckGraph);
+    layout->addWidget(chartview);
+    luckGraph->setLayout(layout);
+
+
+
+    std::vector<QString> log = game[game.turns() - 1].log();
+
+    QTextEdit *luckedit = new QTextEdit(this);
+    luckedit->setReadOnly(true);
+    for (const auto &line : log)
+        luckedit->append(line);
+
+
+
+    QWidget *luckLog = ui->luckLog;
+
+    QVBoxLayout *loglayout = new QVBoxLayout(luckLog);
+    loglayout->addWidget(luckedit);
+
 }

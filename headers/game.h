@@ -22,9 +22,10 @@ public:
     /**
      * @return size of turn_ vector
      */
-    int turns() { return turn_.size(); }
+    int turns() const { return turn_.size(); }
 
 
+    const std::vector<State> &game() const { return turn_; }
 
 
     /**

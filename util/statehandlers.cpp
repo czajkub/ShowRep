@@ -65,11 +65,15 @@ void handleMove(State &state, const QStringList &lines)
 
     state.setMove(move);
 
+    if (secondary.at(move) != 0 && secondary.at(move) != 1) {
+        state.setSecondary(effecttype.at(move));
+    }
+
     // 4 - no miss, 5 - miss
     if (lines.size() == 4) {
-        state.updateLuck(moveLuck(move, lines, true));
+        state.updateLuck(moveLuck(state, move, lines, true));
     } else {
-        state.updateLuck(moveLuck(move, lines, false));
+        state.updateLuck(moveLuck(state, move, lines, false));
     }
 }
 
@@ -101,19 +105,31 @@ void handleStatus(State &state, const QStringList &lines)
     std::string lastmove = state.lastMove();
 
     if (state.pendingSecondary() && state.secondaryType() == 's') {
-        state.updateLuck(secondaryLuck(lastmove, lines, true));
+        state.updateLuck(secondaryLuck(state, lastmove, lines, true));
     }
 }
 
 
 
-double secondaryLuck(const std::string &move, const QStringList &lines, bool hit)
+double secondaryLuck(State& state, const std::string &move, const QStringList &lines, bool hit)
 {
     QString player = SPLITNICK[0];
 
     double acc = secondary.at(move);
 
+    if (!hit)
+        acc = 1 - acc;
+
     double luckchange = acc * SECONDARY_WEIGHT;
+
+    if (luckchange == 0)
+        return luckchange;
+
+    QString log;
+    for (const auto &line : lines)
+        log += (line + "|");
+
+    state.addLog(QString::number(luckchange) + " " + log);
 
     if (player == "p1a") {
         return luckchange;
@@ -121,7 +137,7 @@ double secondaryLuck(const std::string &move, const QStringList &lines, bool hit
     return -1 * luckchange;
 }
 
-double moveLuck(const std::string& move, const QStringList &lines, bool hit)
+double moveLuck(State& state, const std::string& move, const QStringList &lines, bool hit)
 {
     QString player = SPLITNICK[0];
 
@@ -135,13 +151,19 @@ double moveLuck(const std::string& move, const QStringList &lines, bool hit)
     double actualacc = acc;
     double luckchange;
 
-    if (hit) {
-        double complement = 1 - actualacc;
-        luckchange = complement * MOVE_WEIGHT;
-    }
-    else {
-        luckchange = actualacc * MOVE_WEIGHT;
-    }
+    if (hit)
+        actualacc = 1 - actualacc;
+
+    luckchange = actualacc * MOVE_WEIGHT;
+
+    if (luckchange == 0)
+        return luckchange;
+
+    QString log;
+    for (const auto &line : lines)
+        log += (line + "|");
+
+    state.addLog(QString::number(luckchange) + " " + log);
 
     if (player == "p1a") {
         return luckchange;

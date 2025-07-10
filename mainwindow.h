@@ -28,6 +28,7 @@ private:
     Ui::MainWindow *ui;
     Game game;
     QStringList loadReplayFile(QString fname);
+    void plotGraph(const Game &game);
     void fillTable(const State& state);
 };
 #endif // MAINWINDOW_H

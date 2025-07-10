@@ -62,7 +62,7 @@ void handleStatus(State &state, const QStringList &lines);
 
 
 
-double secondaryLuck(const std::string &move, const QStringList &lines, bool hit);
+double secondaryLuck(State& state, const std::string &move, const QStringList &lines, bool hit);
 
 
 /**
@@ -72,6 +72,6 @@ double secondaryLuck(const std::string &move, const QStringList &lines, bool hit
  * @param hit - whether the move hit or not
  * @return
  */
-double moveLuck(const std::string &move, const QStringList &lines, bool hit);
+double moveLuck(State& state, const std::string &move, const QStringList &lines, bool hit);
 
 #endif // STATEHANDLERS_H
