@@ -1,4 +1,4 @@
-#include "headers/game.h"
+#include "include/game.h"
 #include "util/lineid.h"
 #include "util/statehandlers.h"
 

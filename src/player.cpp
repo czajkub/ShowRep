@@ -1,4 +1,4 @@
-#include "headers/player.h"
+#include "include/player.h"
 
 #include <QRegularExpression>
 #include <QMessageBox>

@@ -85,3 +85,4 @@ CMakeLists.txt.user*
 gen9draft-2316738713.log.txt
 input.txt
 Deploy
+tests/logs/
