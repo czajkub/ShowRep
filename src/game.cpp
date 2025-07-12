@@ -61,12 +61,14 @@ void Game::init(QStringList &lines)
         case WIN:
             addTurn(state);
             updateNicks();
+            init_ = true;
             return;
 
         default:
             break;
         }
     }
+
 }
 
 

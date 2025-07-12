@@ -12,6 +12,13 @@
 
 void upkeep(State &state)
 {
+    if(state.pendingSecondary()) {
+        Luck luck = secondaryLuck(state, false);
+        state.resetPendingSecondary();
+        if (luck.log != "")
+            state.addLog(luck.log);
+        state.updateLuck(luck.luck);
+    }
     state.resetPendingSecondary();
     state.setMove(QString());
 }
@@ -20,8 +27,10 @@ void upkeep(State &state)
 
 void handleDamage(State &state, const QStringList &lines)
 {
-    if (lines.size() != 3 && lines.size() != 4)
-        throw std::invalid_argument("wrong line format");
+    if (lines.size() < 3) {
+        std::string error = "wrong damage line format on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
 
     QStringList pokemon = SPLITNICK;
     QString player = pokemon[0];
@@ -35,20 +44,26 @@ void handleDamage(State &state, const QStringList &lines)
             state.player2().setHp(nick, 0);
             state.player2().setFaint(nick);
         } else {
-            throw std::invalid_argument("wrong player name");
+            std::string error = "wrong player name on line " + std::to_string(state.turn());
+            throw std::invalid_argument(error);
         }
         return;
     }
+    QString hp = lines[2].split(u' ')[0];
 
-    int newhp = lines[2].split(u'/')[0].toInt(); // eg. 18/100
-    int maxhp = lines[2].split(u'/')[1].toInt();
+    int newhp = hp.split(u'/')[0].toInt(); // eg. 18/100
+    int maxhp = hp.split(u'/')[1].toInt();
 
-    if(newhp < 0 || maxhp < 0)
-        throw std::invalid_argument("hp or maxhp cannot be negative");
+    if(newhp < 0 || maxhp < 0){
+        std::string error = "negative hp or maxhp on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
 
 
-    if (newhp > maxhp)
-        throw std::invalid_argument("hp larger than max hp");
+    if (newhp > maxhp){
+        std::string error = "hp larger than maxhp on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
 
     if (player == "p1a") {
         state.player1().setHp(nick, newhp, maxhp);
@@ -60,8 +75,10 @@ void handleDamage(State &state, const QStringList &lines)
 
 void handleSwitch(State &state, const QStringList &lines)
 {
-    if(lines.size() != 4 && lines.size() != 5)
-        throw std::invalid_argument("wrong line format");
+    if (lines.size() != 4 && lines.size() != 5) {
+        std::string error = "wrong switch line format on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
 
     QStringList switched = SPLITNICK;
     QString player = switched[0];
@@ -74,31 +91,38 @@ void handleSwitch(State &state, const QStringList &lines)
     } else if (player == "p2a") {
         state.player2().setNick(oldnick, nick);
     } else {
-        throw std::invalid_argument("wrong player name");
+        std::string error = "wrong player name on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
     }
 }
 
 void handleMove(State &state, const QStringList &lines)
 {
-    if(lines.size() != 4 && lines.size() != 5)
-        throw std::invalid_argument("wrong line format");
+    if (lines.size() != 4 && lines.size() != 5) {
+        std::string error = "wrong move line format on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
+
+    upkeep(state);
 
     std::string move = lines[2].toStdString();
 
     state.setMove(move);
 
+    QString player = SPLITNICK[0];
+
     if (secondary.at(move) != 0 && secondary.at(move) != 1) {
-        state.setSecondary(effecttype.at(move));
+        state.setSecondary(effecttype.at(move), player);
     }
 
     // 4 - no miss, 5 - miss only if last part is [miss]
     if (lines.size() == 4 && lines[3] != "[still]") {
-        Luck luck = moveLuck(lines, true);
+        Luck luck = moveLuck(state, lines, true);
         if(luck.log != "") state.addLog(luck.log);
         state.updateLuck(luck.luck);
     }
     else if(lines[4]=="[miss]") {
-        Luck luck = moveLuck(lines, false);
+        Luck luck = moveLuck(state, lines, false);
         if(luck.log != "") state.addLog(luck.log);
         state.updateLuck(luck.luck);
     }
@@ -129,22 +153,25 @@ void handleCrit(State &state, const QStringList &lines)
 
 void handleStatus(State &state, const QStringList &lines)
 {
-    std::string lastmove = state.lastMove();
+    if (!state.pendingSecondary() || state.secondaryType() != 's')
+        return;
 
-    if (state.pendingSecondary() && state.secondaryType() == 's') {
-        Luck luck = secondaryLuck(lastmove, lines, true);
-        if (luck.log != "")
-            state.addLog(luck.log);
-        state.updateLuck(luck.luck);
-    }
-}
-
-
-Luck secondaryLuck(const std::string& move, const QStringList &lines, bool hit)
-{
     QString player = SPLITNICK[0];
 
-    double acc = secondary.at(move);
+    Luck luck = secondaryLuck(state, lines, true);
+    state.resetPendingSecondary();
+    if (luck.log != "")
+        state.addLog(luck.log);
+    state.updateLuck(luck.luck);
+
+}
+
+Luck secondaryLuck(const State &state, bool hit)
+{
+    QString player = state.pendingSecondaryPlayer();
+    std::string lastmove = state.lastMove();
+
+    double acc = secondary.at(lastmove);
 
     if (!hit)
         acc = 1 - acc;
@@ -155,11 +182,6 @@ Luck secondaryLuck(const std::string& move, const QStringList &lines, bool hit)
         return Luck{0, ""};
 
     Luck luck;
-    QString log;
-    for (const auto &line : lines)
-        log += (line + "|");
-
-    luck.log = QString::number(luckchange) + " " + log;
 
     if (player == "p1a") {
         luck.luck = luckchange;
@@ -168,12 +190,69 @@ Luck secondaryLuck(const std::string& move, const QStringList &lines, bool hit)
     } else
         throw std::invalid_argument("wrong player name");
 
+    QString log;
+    player == "p1a" ? log += state.p1name() : log += state.p2name();
+    log += " Missed secondary effect of  "
+           + QString::fromStdString(lastmove);
+
+    luck.log = QString::number(luckchange) + ": " + log;
+
     return luck;
 }
 
-Luck moveLuck(const QStringList &lines, bool hit)
+
+Luck secondaryLuck(const State& state, const QStringList &lines, bool hit)
+{
+    if(lines.size() < 3) {
+        std::string error = "wrong move line format on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
+
+    if(lines.size() == 4 && lines[3].startsWith("[from]")) {
+        return Luck{0, ""};
+    }
+
+    if(!state.pendingSecondary()) {
+        return Luck{0, ""};
+    }
+
+    QString player = SPLITNICK[0];
+
+    std::string lastmove = state.lastMove();
+
+    double acc = secondary.at(lastmove);
+
+    if (!hit)
+        acc = 1 - acc;
+
+    double luckchange = acc * SECONDARY_WEIGHT;
+
+    if (luckchange == 0)
+        return Luck{0, ""};
+
+    Luck luck;
+
+    if (player == "p1a") {
+        luck.luck = luckchange;
+    } else if (player == "p2a") {
+        luck.luck = -1 * luckchange;
+    } else
+        throw std::invalid_argument("wrong player name");
+
+    QString log;
+    log += player == "p1a" ? state.p1name() : state.p2name();
+    log += hit ? " hit" : " missed";
+    log += " secondary effect";
+
+    luck.log = QString::number(luckchange) + ": " + log;
+
+    return luck;
+}
+
+Luck moveLuck(const State& state, const QStringList &lines, bool hit)
 {
     QString player = SPLITNICK[0];
+    QString pokemon = SPLITNICK[1];
 
     std::string move = lines[2].toStdString();
 
@@ -198,17 +277,22 @@ Luck moveLuck(const QStringList &lines, bool hit)
 
 
     Luck luck;
-    QString log;
-    for (const auto &line : lines)
-        log += (line + " ");
 
-    luck.log = QString::number(luckchange) + " " + log;
     if (player == "p1a") {
         luck.luck = luckchange;
     } else if (player == "p2a") {
         luck.luck = -1 * luckchange;
     } else
         throw std::invalid_argument("wrong player name");
+
+
+    QString log;
+    log += player == "p1a" ? state.p1name() : state.p2name();
+    log += "'s " + pokemon;
+    log += hit ? " hit " : " missed ";
+    log += QString::fromStdString(move);
+
+    luck.log = QString::number(luckchange) + ": " + log;
 
     return luck;
 }

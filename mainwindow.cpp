@@ -33,11 +33,16 @@ void MainWindow::on_fileButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Add replay file", QDir::homePath());
     QStringList list = loadReplayFile(filename);
-    //fillTable(state);
+
     game.init(list);
+
+
     ui->turnSlider->setMinimum(0);
     ui->turnSlider->setMaximum(game.turns() - 1);
     ui->turnSlider->setValue(0);
+
+    //ui->turnSliderEdit->setAlignment(Qt::AlignCenter);
+    ui->turnSliderEdit->setText("0");
 
     plotGraph(game);
 
@@ -47,8 +52,14 @@ void MainWindow::on_fileButton_clicked()
 QStringList MainWindow::loadReplayFile(QString fname)
 {
     QFile inputFile(fname);
-    inputFile.open(QIODevice::ReadOnly);
-
+    bool ok = inputFile.open(QIODevice::ReadOnly);
+    if (!ok) {
+        QMessageBox errorbox;
+        errorbox.setText("Error opening log");
+        errorbox.exec();
+        QStringList list;
+        return list;
+    }
 
     QTextStream in(&inputFile);
     QStringList lines;
@@ -58,15 +69,10 @@ QStringList MainWindow::loadReplayFile(QString fname)
         lines << line;
     } while (line != QString());
 
-    //QString line = in.readAll();
-
     inputFile.close();
 
     return lines;
 
-    // ui->textEdit->setPlainText(lines[1]);
-    // QTextCursor cursor = ui->textEdit->textCursor();
-    // cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor, 1);
 
 }
 
@@ -108,6 +114,7 @@ void MainWindow::fillTable(const State &state)
 void MainWindow::on_turnSlider_valueChanged(int value)
 {
     fillTable(game[value]);
+    ui->turnSliderEdit->setText(QString::number(value));
 }
 
 
@@ -152,4 +159,25 @@ void MainWindow::plotGraph(const Game &game)
     QVBoxLayout *loglayout = new QVBoxLayout(luckLog);
     loglayout->addWidget(luckedit);
 
+}
+
+void MainWindow::on_turnSliderEdit_textChanged()
+{
+    // if (!game.initialised())
+    //     return;
+
+    // // doesnt work??
+
+    // bool ok;
+    // int turn = ui->turnSliderEdit->toPlainText().toInt(&ok, 10);
+    // bool correctturn = (turn >= ui->turnSlider->minimum() && turn <= ui->turnSlider->maximum());
+    // if (ok && correctturn) {
+    //     ui->turnSlider->setValue(turn);
+    //     fillTable(game[turn]);
+    //     return;
+    // }
+
+    // ui->turnSlider->setValue(0);
+    // fillTable(game[0]);
+    // ui->turnSliderEdit->setText("");
 }

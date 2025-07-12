@@ -8,6 +8,8 @@ class Game
     std::vector<State> turn_;
     InitialState initialState_;
 
+    bool init_ = false;
+
 public:
     /**
      * @brief Load game state from lines of log
@@ -24,6 +26,7 @@ public:
      */
     int turns() const { return turn_.size(); }
 
+    bool initialised() const { return init_; }
 
     const std::vector<State> &game() const { return turn_; }
 

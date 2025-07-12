@@ -90,13 +90,14 @@ void statehandlers::moveTest()
     QStringList move1;
     QStringList move2;
     QStringList move3;
-    // thunder - 70% accurate move (well, not in rain, but thats another story)
-    move1 << "move" << "p1a: Chaos Space Marine" << "Thunder" << "p2a: Skuntank";
-    move2 << "move" << "p1a: Chaos Space Marine" << "Thunder" << "p2a: Skuntank" << "[miss]";
-    move3 << "move" << "p1a: Chaos Space Marine" << "Thunder" << "p2a: Skuntank" << "[notarget]";
 
-    double luck1 = moveLuck(move1, true).luck;
-    double luck2 = moveLuck(move1, false).luck;
+    // hydro pump - 80% accurate move with no special effects
+    move1 << "move" << "p1a: Chaos Space Marine" << "Hydro Pump" << "p2a: Skuntank";
+    move2 << "move" << "p1a: Chaos Space Marine" << "Hydro Pump" << "p2a: Skuntank" << "[miss]";
+    move3 << "move" << "p1a: Chaos Space Marine" << "Hydro Pump" << "p2a: Skuntank" << "[notarget]";
+
+    double luck1 = moveLuck(state, move1, true).luck;
+    double luck2 = moveLuck(state, move1, false).luck;
     double luck3 = 0;
 
 
@@ -109,6 +110,7 @@ void statehandlers::moveTest()
     handleMove(state, move3);
     QCOMPARE(state.luckscore(), luck1 + luck2 + luck3);
 
+    // 3rd entry doesnt produce a log
     QCOMPARE(state.log().size(), 2);
 }
 

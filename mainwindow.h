@@ -24,6 +24,8 @@ private slots:
 
     void on_turnSlider_valueChanged(int value);
 
+    void on_turnSliderEdit_textChanged();
+
 private:
     Ui::MainWindow *ui;
     Game game;

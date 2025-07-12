@@ -67,8 +67,9 @@ struct Luck
 
 
 
-Luck secondaryLuck(const std::string& lastmove, const QStringList &lines, bool hit);
+Luck secondaryLuck(const State& state, const QStringList &lines, bool hit);
 
+Luck secondaryLuck(const State& state, bool hit);
 
 /**
  * @brief calculate luck score based on move and whether it hit
@@ -77,6 +78,6 @@ Luck secondaryLuck(const std::string& lastmove, const QStringList &lines, bool h
  * @param hit - whether the move hit or not
  * @return
  */
-Luck moveLuck(const QStringList &lines, bool hit);
+Luck moveLuck(const State& state, const QStringList &lines, bool hit);
 
 #endif // STATEHANDLERS_H
