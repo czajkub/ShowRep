@@ -59,10 +59,15 @@ void handleCrit(State &state, const QStringList &lines);
 void handleStatus(State &state, const QStringList &lines);
 
 
+struct Luck
+{
+    double luck;
+    QString log;
+};
 
 
 
-double secondaryLuck(State& state, const std::string &move, const QStringList &lines, bool hit);
+Luck secondaryLuck(const std::string& lastmove, const QStringList &lines, bool hit);
 
 
 /**
@@ -72,6 +77,6 @@ double secondaryLuck(State& state, const std::string &move, const QStringList &l
  * @param hit - whether the move hit or not
  * @return
  */
-double moveLuck(State& state, const std::string &move, const QStringList &lines, bool hit);
+Luck moveLuck(const QStringList &lines, bool hit);
 
 #endif // STATEHANDLERS_H

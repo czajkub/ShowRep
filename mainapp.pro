@@ -45,6 +45,6 @@ DISTFILES += \
     README.md \
 
 SUBDIRS += \
-    tests/tests.pro
+    tests.pro
 
 
