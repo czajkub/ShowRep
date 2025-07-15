@@ -3,6 +3,14 @@
 
 #include <QStringList>
 
+enum status { BURN, PARALYSIS, FREEZE, POISON, TOXIC, SLEEP, CONFUSION };
+
+struct Status
+{
+    status type;
+    int length;
+};
+
 class Pokemon
 {
 public:
@@ -13,15 +21,17 @@ public:
         gender_(gender),
         hp_(100),
         maxhp_(100),
-        alive_(true)
+        // alive_(true),
+        status_(Status())
     {}
     explicit Pokemon(QString name)
-        : name_(name),
-        nickname_(name),
-        gender_('U'),
-        hp_(100),
-        maxhp_(100),
-        alive_(true)
+        : name_(name)
+        , nickname_(name)
+        , gender_('U')
+        , hp_(100)
+        , maxhp_(100)
+        // , alive_(true)
+        , status_(Status())
     {}
 
     void setNick(QString nick) { nickname_ = nick; }
@@ -38,10 +48,8 @@ public:
     QString nickname() const { return nickname_; }
 
 
-    void setHp(int newhp, int maxhp)
-    {
-        hp_ = newhp;
-        maxhp_ = maxhp;
+    void setHp(int newhp, int maxhp) {
+        hp_ = newhp; maxhp_ = maxhp;
     }
     void setHp(int newhp) { hp_ = newhp; }
 
@@ -52,9 +60,13 @@ public:
 
     double healthPercent() const { return static_cast<double>(hp_) / static_cast<double>(maxhp_) * 100;}
 
+    void setStatus(status status) { status_ = Status{status, 0}; }
+    void resetStatus() { status_ = Status(); }
+    void updateStatus() { ++status_.length; }
+    const Status& status() const { return status_; }
 
-    void fainted() { alive_ = false; }
-    bool isalive() const { return alive_; }
+    // void fainted() { alive_ = false; }
+    // bool isalive() const { return alive_; }
 
 private:
     QString name_;
@@ -62,7 +74,8 @@ private:
     QChar gender_;
     int hp_;
     int maxhp_;
-    bool alive_ = true;
+    // bool alive_ = true;
+    Status status_{};
 };
 
 

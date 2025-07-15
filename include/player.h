@@ -54,6 +54,12 @@ public:
      */
     void setNick(const QString &oldname, const QString &newname);
 
+    /**
+     * @brief increase status length by one for each pokemon
+     */
+    void updateStatuses();
+
+    void setStatus(const QString nick, status type);
 
     //std::vector<Pokemon> pokes() const { return mons_; }
     /**

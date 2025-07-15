@@ -1,5 +1,6 @@
 #include "statehandlers.h"
 #include "moves.cpp"
+#include "../include/pokemon.h"
 
 #include <QRegularExpression>
 
@@ -21,6 +22,9 @@ void upkeep(State &state)
     }
     state.resetPendingSecondary();
     state.setMove(QString());
+    state.player1().updateStatuses();
+    state.player2().updateStatuses();
+
 }
 
 
@@ -39,10 +43,8 @@ void handleDamage(State &state, const QStringList &lines)
     if (lines[2] == "0 fnt") {
         if (player == "p1a") {
             state.player1().setHp(nick, 0);
-            state.player1().setFaint(nick);
         } else if (player == "p2a") {
             state.player2().setHp(nick, 0);
-            state.player2().setFaint(nick);
         } else {
             std::string error = "wrong player name on line " + std::to_string(state.turn());
             throw std::invalid_argument(error);
@@ -112,7 +114,7 @@ void handleMove(State &state, const QStringList &lines)
     QString player = SPLITNICK[0];
 
     if (secondary.at(move) != 0 && secondary.at(move) != 1) {
-        state.setSecondary(effecttype.at(move), player);
+        state.setSecondary(player);
     }
 
     // 4 - no miss, 5 - miss only if last part is [miss]
@@ -134,8 +136,10 @@ void handleCrit(State &state, const QStringList &lines)
 {
     QString player = SPLITNICK[0];
 
+    const std::string lastmove = state.lastMove();
+
     // check whether move always crits
-    if (state.pendingSecondary() && state.secondaryType() == 'a') {
+    if (critmoves.count(lastmove) == 1){
         state.resetPendingSecondary();
         return;
     }
@@ -153,10 +157,47 @@ void handleCrit(State &state, const QStringList &lines)
 
 void handleStatus(State &state, const QStringList &lines)
 {
-    if (!state.pendingSecondary() || state.secondaryType() != 's')
+    if (lines.size() < 3) {
+        std::string error = "wrong move line format on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
+
+    QStringList pokemon = SPLITNICK;
+
+    QString player = pokemon[0];
+    QString nick = pokemon[1];
+
+    QString stat = lines[2];
+    status type;
+
+    if (stat == "brn") {
+        type = BURN;
+    } else if (stat == "par") {
+        type = PARALYSIS;
+    } else if (stat == "frz") {
+        type = FREEZE;
+    } else if (stat == "psn") {
+        type = POISON;
+    } else if (stat == "tox") {
+        type = TOXIC;
+    } else if (stat == "slp") {
+        type = SLEEP;
+    }
+
+    if (player == "p1a") {
+        state.player1().setStatus(nick, type);
+    }
+    else if (player == "p2a") {
+        state.player2().setStatus(nick, type);
+    }
+    else {
+        std::string error = "wrong player name on line " + std::to_string(state.turn());
+        throw std::invalid_argument(error);
+    }
+
+    if (!state.pendingSecondary())
         return;
 
-    QString player = SPLITNICK[0];
 
     Luck luck = secondaryLuck(state, lines, true);
     state.resetPendingSecondary();

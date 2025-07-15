@@ -52,8 +52,8 @@ void Game::init(QStringList &lines)
             handleCrit(state, fields);
             break;
 
-
-        case STATUS: case CANT:
+        case CANT:
+        case STATUS:
             handleStatus(state, fields);
             break;
 

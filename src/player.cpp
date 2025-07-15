@@ -27,26 +27,34 @@ void Player::addPokemon(const QString &line)
 
 void Player::setHp(const QString& nick, int newhp, int maxhp)
 {
-    if (mons_.count(nick) == 0)
-        return;
+    if (mons_.count(nick) == 0) {
+        throw std::invalid_argument("Wrong nick of mon during setting hp");
+    }
     mons_[nick].setHp(newhp, maxhp);
 }
 
 void Player::setHp(const QString& nick, int newhp)
 {
-    if (mons_.count(nick) == 0)
-        return;
+    if (mons_.count(nick) == 0) {
+        throw std::invalid_argument("Wrong nick of mon during setting hp");
+    }
     mons_[nick].setHp(newhp);
 }
 
 
-void Player::setFaint(const QString &nick)
-{
-    if (mons_.count(nick) == 0)
-        return;
-    mons_[nick].fainted();
-}
+// void Player::setFaint(const QString &nick)
+// {
+//     if (mons_.count(nick) == 0)
+//         return;
+//     mons_[nick].fainted();
+// }
 
+void Player::updateStatuses()
+{
+    for (auto &[nick, mon] : mons_) {
+        mon.updateStatus();
+    }
+}
 
 void Player::setNick(const QString &oldname, const QString &newname)
 {
@@ -82,3 +90,13 @@ void Player::setNick(const QString &oldname, const QString &newname)
     */
 
 }
+
+void Player::setStatus(const QString nick, status type)
+{
+    if (mons_.count(nick) == 0) {
+        throw std::invalid_argument("Wrong nick of mon during setting status");
+    }
+    mons_[nick].setStatus(type);
+}
+
+

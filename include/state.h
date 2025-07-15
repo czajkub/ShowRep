@@ -22,7 +22,6 @@ protected:
     // used to determine whether secondary effect of a move triggered
     bool pendingsecondary_ = false;
     QString pendingplayer_;
-    char secondarytype_ = '0';
 
     std::vector<QString> luckLog_;
 
@@ -49,17 +48,14 @@ public:
     void resetPendingSecondary()
     {
         pendingsecondary_ = false;
-        secondarytype_ = '0';
     }
-    void setSecondary(const char &type, const QString& player) {
+    void setSecondary(const QString& player) {
         pendingsecondary_ = true;
-        secondarytype_ = type;
         pendingplayer_ = player;
     }
 
     bool pendingSecondary() const { return pendingsecondary_; }
     QString pendingSecondaryPlayer() const { return pendingplayer_; }
-    char secondaryType() const { return secondarytype_; }
 
 
     void addLog(const QString &log) { luckLog_.push_back(log); }

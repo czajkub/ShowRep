@@ -19,6 +19,7 @@ private slots:
     void damageTest();
     void switchTest();
     void moveTest();
+    void statusTest();
 };
 
 statehandlers::statehandlers() {}
@@ -31,6 +32,8 @@ void statehandlers::damageTest() {
     InitialState istate(lines);
     State state;
     istate.copyToState(state);
+
+
     QStringList damage1;
     damage1 << "-damage" << "p1a: Landorus-Therian" << "27/120";
     handleDamage(state, damage1);
@@ -115,7 +118,40 @@ void statehandlers::moveTest()
 }
 
 
+void statehandlers::statusTest()
+{
+    fs::path path = "../../tests/logs/kubercikkacperol.log.txt";
+    auto lines = loadReplayFile(path);
+    InitialState istate(lines);
+    State state;
+    istate.copyToState(state);
 
+
+    QCOMPARE(state.mons1().at("Primarina").status().length, 0);
+    QCOMPARE(state.mons1().at("Primarina").status().type, 0);
+
+    upkeep(state);
+    upkeep(state);
+    upkeep(state);
+
+    QCOMPARE(state.mons1().at("Primarina").status().length, 3);
+
+    QStringList line;
+    line << "-status" << "p1a: Primarina" << "par";
+
+    handleStatus(state, line);
+
+    QCOMPARE(state.mons1().at("Primarina").status().length, 0);
+    QCOMPARE(state.mons1().at("Primarina").status().type, PARALYSIS);
+
+    upkeep(state);
+    upkeep(state);
+
+
+    QCOMPARE(state.mons1().at("Primarina").status().length, 2);
+    QCOMPARE(state.mons1().at("Primarina").status().type, PARALYSIS);
+
+}
 
 
 
