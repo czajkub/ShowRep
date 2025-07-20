@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->verticalLayout_3->
 }
 
 MainWindow::~MainWindow()

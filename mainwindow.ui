@@ -33,13 +33,25 @@
         <layout class="QVBoxLayout" name="verticalLayout">
          <item alignment="Qt::AlignmentFlag::AlignHCenter">
           <widget class="QLabel" name="fileLabel">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>40</height>
+            </size>
+           </property>
            <property name="text">
             <string>Replay:</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignmentFlag::AlignHCenter">
           <widget class="QPushButton" name="fileButton">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>24</height>
+            </size>
+           </property>
            <property name="text">
             <string>Find</string>
            </property>
@@ -51,12 +63,18 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item alignment="Qt::AlignmentFlag::AlignHCenter">
           <widget class="QLabel" name="turnSliderLabel">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
            <property name="text">
             <string>Turn</string>
            </property>
           </widget>
          </item>
-         <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignVCenter">
+         <item alignment="Qt::AlignmentFlag::AlignHCenter">
           <widget class="QTextEdit" name="turnSliderEdit">
            <property name="maximumSize">
             <size>
@@ -74,6 +92,12 @@
          </item>
          <item>
           <widget class="QSlider" name="turnSlider">
+           <property name="maximumSize">
+            <size>
+             <width>1000</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="minimum">
             <number>1</number>
            </property>
@@ -96,7 +120,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeWidget" name="player1table">
+        <widget class="QListWidget" name="player1table">
          <property name="autoScroll">
           <bool>true</bool>
          </property>
@@ -114,7 +138,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeWidget" name="player2table"/>
+        <widget class="QListWidget" name="player2table"/>
        </item>
       </layout>
      </item>
