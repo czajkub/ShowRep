@@ -35,10 +35,13 @@ InitialState::InitialState(QStringList& lines) {
             fields[1] == "p1" ? setPlayer(1, Player(fields[2], fields[3]))
                               : setPlayer(2, Player(fields[2], fields[3]));
             break;
-        case POKE:
-            fields[1] == "p1" ? player1().addPokemon(fields[2])
-                              : player2().addPokemon(fields[2]);
+        case POKE: {
+            ok = fields[1] == "p1" ? player1().addPokemon(fields[2])
+                                    : player2().addPokemon(fields[2]);
+            if (!ok)
+                return;
             break;
+        }
         case TEAMSIZE:
             fields[1] == "p1" ? player1().setTeamSize(fields[2].toULongLong())
                               : player2().setTeamSize(fields[2].toULongLong());

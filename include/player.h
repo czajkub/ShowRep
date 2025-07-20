@@ -27,7 +27,7 @@ public:
      * @brief insert pokemon into unordered_map
      * @param line - log line representing pokemon
      */
-    void addPokemon(const QString &line);
+    bool addPokemon(const QString &line);
 
     /**
      * @brief change a pokemon's HP
@@ -59,9 +59,11 @@ public:
      */
     void updateStatuses();
 
+    /**
+     * @param type - status enum from pokemon.h
+     */
     void setStatus(const QString nick, status type);
 
-    //std::vector<Pokemon> pokes() const { return mons_; }
     /**
      * @return mons_ map
      */
@@ -71,7 +73,6 @@ private:
     QString name_;
     QString avatar_;
     size_t teamsize_ = 6;
-    //std::vector<Pokemon> mons_;
     std::unordered_map<QString, Pokemon> mons_;
 };
 

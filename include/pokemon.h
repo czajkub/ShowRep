@@ -3,13 +3,16 @@
 
 #include <QStringList>
 
-enum status { BURN, PARALYSIS, FREEZE, POISON, TOXIC, SLEEP, CONFUSION };
+enum status { HEALTHY, BURN, PARALYSIS, FREEZE, POISON, TOXIC, SLEEP, CONFUSION };
 
 struct Status
 {
     status type;
     int length;
 };
+
+QString toQString(const Status s);
+
 
 class Pokemon
 {

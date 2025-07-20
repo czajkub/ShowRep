@@ -15,7 +15,7 @@ public:
      * @brief Load game state from lines of log
      * @param QStringList consisting of separate lines of the log
      */
-    void init(QStringList &lines);
+    bool init(QStringList &lines);
     /**
      * @brief insert turn into turn_ vector
      * @param current state

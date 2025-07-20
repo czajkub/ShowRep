@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "include/game.h"
+#include "include/pokemon.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -14,6 +15,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
 #include <QtCore/QPointF>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -78,32 +80,32 @@ QStringList MainWindow::loadReplayFile(QString fname)
 
 void MainWindow::fillTable(const State &state)
 {
+    ui->player1table->clear();
+    ui->player2table->clear();
 
-    int count = 0;
+    ui->player1table->setColumnCount(1);
+    ui->player2table->setColumnCount(1);
+
     for (const auto & [nick, mon] : state.mons1()) {
-        QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
-        double health = std::floor(mon.healthPercent() * 10) / 10;
-        QString hpstr = QString::number(health) + "%";
-        QTableWidgetItem *hp = new QTableWidgetItem(hpstr);
+        auto poke = new QTreeWidgetItem(ui->player1table);
+        poke->setText(0, mon.printable());
+
+        new QTreeWidgetItem(poke, QStringList(mon.name()));
+        new QTreeWidgetItem(poke, QStringList(mon.hp() + "/" + mon.maxhp()));
+        new QTreeWidgetItem(poke, QStringList(toQString(mon.status())));
+
 
         // QMessageBox msgBox;
         // msgBox.setText(mon.printable());
         // msgBox.exec();
-
-        ui->player1table->setItem(count, 0, name);
-        ui->player1table->setItem(count, 1, hp);
-        ++count;
     }
-    count = 0;
     for (const auto & [nick, mon] : state.mons2()) {
-        QTableWidgetItem *name = new QTableWidgetItem(mon.printable());
-        double health = std::floor(mon.healthPercent() * 10) / 10;
-        QString hpstr = QString::number(health) + "%";
-        QTableWidgetItem *hp = new QTableWidgetItem(hpstr);
+        auto poke = new QTreeWidgetItem(ui->player2table);
+        poke->setText(0, mon.printable());
 
-        ui->player2table->setItem(count, 0, name);
-        ui->player2table->setItem(count, 1, hp);
-        ++count;
+        new QTreeWidgetItem(poke, QStringList(mon.printable()));
+        new QTreeWidgetItem(poke, QStringList(mon.hp()));
+        new QTreeWidgetItem(poke, QStringList(toQString(mon.status())));
     }
 
     ui->player1tableLabel->setText(state.p1name());
@@ -125,14 +127,41 @@ void MainWindow::plotGraph(const Game &game)
         series->append(i, game[i].luckscore());
     }
 
-    series->setColor(Qt::blue);
-    series->setPen(QPen(Qt::green, 2));
+    QBrush brush(Qt::white, Qt::Dense1Pattern);
+
+    QFont font;
+    font.setBold(true);
+    font.setWeight(QFont::Bold);
+
+    series->setBrush(brush);
+    series->setColor(Qt::white);
 
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->createDefaultAxes();
 
-    chart->setTitle("Luck score");
+    chart->createDefaultAxes();
+    for (auto axis : chart->axes()) {
+        if (QValueAxis *valaxis = qobject_cast<QValueAxis *>(axis)) {
+            valaxis->setLabelsFont(font);
+            valaxis->setLabelsBrush(brush);
+        }
+    }
+
+    // auto xAxis = chart->axes(Qt::Horizontal).constFirst();
+    // auto yAxis = chart->axes(Qt::Vertical).constFirst();
+    // xAxis->setTitleBrush(brush);
+    // xAxis->setTitleFont(font);
+    // yAxis->setTitleBrush(brush);
+    // yAxis->setTitleFont(font);
+
+
+    chart->setBackgroundVisible(false);
+
+    chart->setTitleBrush(brush);
+    chart->setTitleFont(font);
+
+    chart->setTitle("Luck Score");
+
 
     QChartView *chartview = new QChartView(chart);
     chartview->setRenderHint(QPainter::Antialiasing);

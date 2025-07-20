@@ -3,7 +3,7 @@
 #include <QRegularExpression>
 #include <QMessageBox>
 
-void Player::addPokemon(const QString &line)
+bool Player::addPokemon(const QString &line)
 {
     QStringList fields = line.split(QRegularExpression(", "), Qt::SkipEmptyParts);
 
@@ -12,10 +12,16 @@ void Player::addPokemon(const QString &line)
     if (fields[0] == "Urshifu-*")
         fields[0] = "Urshifu";
 
+    // more than one of the same pokemon - unhandled
+    if (mons_.count(fields[0]) == 1) {
+        return false;
+    }
+
     if (fields.size() == 1) {
         // mons_[fields[0]] = Pokemon(fields[0]);
         mons_.insert(std::make_pair(fields[0], Pokemon(fields[0])));
-    } else {
+    }
+    else {
         // mons_[fields[0]] = Pokemon(fields[0], fields[1][0]);
         mons_.insert(std::make_pair(fields[0], Pokemon(fields[0], fields[1][0])));
     }
@@ -23,6 +29,8 @@ void Player::addPokemon(const QString &line)
     if(mons_.size() > 6 || mons_.size() > teamsize_) {
         // TODO: throw some sort of error message to user !
     }
+
+    return true;
 }
 
 void Player::setHp(const QString& nick, int newhp, int maxhp)

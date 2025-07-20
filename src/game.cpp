@@ -5,9 +5,14 @@
 
 #include <QRegularExpression>
 
-void Game::init(QStringList &lines)
+bool Game::init(QStringList &lines)
 {
     initialState_ = InitialState(lines);
+
+    if (!initialState_.ok) {
+        return false;
+    }
+
     State state;
     initialState_.copyToState(state);
     addTurn(state); // add empty turn: we want to index turns from 1
@@ -62,13 +67,13 @@ void Game::init(QStringList &lines)
             addTurn(state);
             updateNicks();
             init_ = true;
-            return;
+            return true;
 
         default:
             break;
         }
     }
-
+    return false;
 }
 
 

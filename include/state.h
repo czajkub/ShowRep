@@ -90,6 +90,10 @@ class InitialState : public State
     QString gametype_;
     QString tier_;
 
+
+public:
+    bool ok = true;
+
 public:
     InitialState() = default;
     explicit InitialState(QStringList &lines);

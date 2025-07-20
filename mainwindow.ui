@@ -20,9 +20,9 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>31</y>
-      <width>1031</width>
+      <x>0</x>
+      <y>1</y>
+      <width>1291</width>
       <height>281</height>
      </rect>
     </property>
@@ -96,50 +96,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="player1table">
+        <widget class="QTreeWidget" name="player1table">
          <property name="autoScroll">
           <bool>true</bool>
          </property>
-         <row>
-          <property name="text">
-           <string>Pokemon1</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 2</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 3</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 4</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 5</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 6</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
         </widget>
        </item>
       </layout>
@@ -154,48 +114,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="player2table">
-         <row>
-          <property name="text">
-           <string>Pokemon1</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 2</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 3</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 4</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 5</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Pokemon 6</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
-        </widget>
+        <widget class="QTreeWidget" name="player2table"/>
        </item>
       </layout>
      </item>
@@ -204,20 +123,20 @@
    <widget class="QWidget" name="luckGraph" native="true">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>310</y>
-      <width>691</width>
-      <height>311</height>
+      <x>0</x>
+      <y>280</y>
+      <width>801</width>
+      <height>411</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="luckLog" native="true">
     <property name="geometry">
      <rect>
-      <x>809</x>
-      <y>309</y>
-      <width>341</width>
-      <height>311</height>
+      <x>800</x>
+      <y>280</y>
+      <width>481</width>
+      <height>411</height>
      </rect>
     </property>
    </widget>

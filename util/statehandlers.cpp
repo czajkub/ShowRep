@@ -123,7 +123,7 @@ void handleMove(State &state, const QStringList &lines)
         if(luck.log != "") state.addLog(luck.log);
         state.updateLuck(luck.luck);
     }
-    else if(lines[4]=="[miss]") {
+    else if(lines.size() == 5 && lines[4]=="[miss]") {
         Luck luck = moveLuck(state, lines, false);
         if(luck.log != "") state.addLog(luck.log);
         state.updateLuck(luck.luck);
