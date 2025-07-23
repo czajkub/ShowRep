@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->verticalLayout_3->
 }
 
 MainWindow::~MainWindow()
@@ -210,4 +209,22 @@ void MainWindow::on_turnSliderEdit_textChanged()
     // ui->turnSlider->setValue(0);
     // fillTable(game[0]);
     // ui->turnSliderEdit->setText("");
+}
+
+void MainWindow::on_urlButton_clicked() {
+    QString replayURL = ui->urlTextEdit->toPlainText().trimmed();
+    QStringList lines = getReplayFromUrl(replayURL);
+
+    game.init(lines);
+
+    ui->turnSlider->setMinimum(0);
+    ui->turnSlider->setMaximum(game.turns() - 1);
+    ui->turnSlider->setValue(0);
+
+    //ui->turnSliderEdit->setAlignment(Qt::AlignCenter);
+    ui->turnSliderEdit->setText("0");
+
+    plotGraph(game);
+
+    fillTable(game[0]);
 }

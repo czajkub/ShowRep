@@ -10,6 +10,7 @@ CONFIG += c++23
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     src/player.cpp \
     src/pokemon.cpp \
     src/state.cpp \
+    src/webreplay.cpp \
     util/lineid.cpp \
     util/moves.cpp \
     util/statehandlers.cpp
@@ -48,3 +50,9 @@ SUBDIRS += \
     tests.pro
 
 
+
+win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/curl/lib -lcurl
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/curl/lib -lcurl
+
+INCLUDEPATH += $$_PRO_FILE_PWD_/curl/include
+DEPENDPATH += $$_PRO_FILE_PWD_/curl/include

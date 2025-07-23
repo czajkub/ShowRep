@@ -26,11 +26,14 @@ private slots:
 
     void on_turnSliderEdit_textChanged();
 
+    void on_urlButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Game game;
     QStringList loadReplayFile(QString fname);
     void plotGraph(const Game &game);
     void fillTable(const State& state);
+    QStringList getReplayFromUrl(const QString &url);
 };
 #endif // MAINWINDOW_H
