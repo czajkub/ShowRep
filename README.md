@@ -2,7 +2,7 @@
 ## App used to get info from your [Pokemon Showdown](https://play.pokemonshowdown.com/) replays! 
 
 ## About
-The application is build using (Qt)[https://www.qt.io/] 6.9.1
+The application is build using [Qt](https://www.qt.io/) 6.9.1
 
 ## Install:
 - On Windows, you can select the latest release and download the .zip file containing a (maybe) working folder with a (maybe) working showrep.exe file
