@@ -3,6 +3,7 @@ QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT += charts
+QT += network
 
 CONFIG += c++23
 
@@ -49,10 +50,3 @@ DISTFILES += \
 SUBDIRS += \
     tests.pro
 
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$_PRO_FILE_PWD_/curl/lib -lcurl
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$_PRO_FILE_PWD_/curl/lib -lcurl
-
-INCLUDEPATH += $$_PRO_FILE_PWD_/curl/include
-DEPENDPATH += $$_PRO_FILE_PWD_/curl/include

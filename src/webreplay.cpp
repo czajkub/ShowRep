@@ -1,47 +1,35 @@
-#include <curl/curl.h>
-#include <iostream>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrl>
+#include <QEventLoop>
 
 #include "mainwindow.h"
 
 
-size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
-    size_t totalSize = size * nmemb;
-    std::string* data = (std::string*)userp;  // Store the data in a string
-    data->append((char*)contents, totalSize); // Append the received data to the string
-    return totalSize;
-}
-
-
 QStringList MainWindow::getReplayFromUrl(const QString &url)
 {
-    std::string stdurl = url.toStdString() + ".log";
-    std::string buffer;
-    QStringList lines;
-    CURL *curl;
-    CURLcode res;
+    const QString logurl = url + ".log";
 
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    curl = curl_easy_init();
+    QNetworkAccessManager client;
+    QNetworkRequest request;
+    request.setUrl(QUrl(logurl));
+    QNetworkReply *reply = client.get(request);
 
+    QEventLoop loop;
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
 
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, stdurl.c_str());
-
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-
-        res = curl_easy_perform(curl);
-
-        if (res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-        } else {
-            QString body = QString::fromStdString(buffer);
-            lines = body.split('\n', Qt::SkipEmptyParts);
-        }
-
-        curl_easy_cleanup(curl);
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Request failed:" << reply->errorString();
+        reply->deleteLater();
+        return QStringList();
     }
 
-    curl_global_cleanup();
-    return lines;
+    QString buffer = reply->readAll();
+    reply->deleteLater();
+
+    return buffer.split('\n', Qt::SkipEmptyParts);
+
+
 }
