@@ -14,8 +14,7 @@ If you decide to deploy manually, you can open the project in the Qt and do the 
 
 ## How to use:
 
-To start, open the app and enter your replay file [TODO: add other ways of replay input],
-then watch the magic!
+To start, open the app and enter your replay url or file, then watch the magic!
 
 The app calculates (very naively so far) how lucky you or you opponent were during the battle by a variety of metrics:
 - move accuracy
